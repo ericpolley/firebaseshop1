@@ -28,8 +28,9 @@ export default function SignIn() {
       if(userCredential.user){
         navigate("/")
       }
+     
     } catch (error) {
-      toast.error("Bad user credentials.")
+      toast.error("Complete Form before submitting.")
     }
   }
   return (
