@@ -10,14 +10,37 @@ export default function CreateListing() {
     furnished: false,
     address: "",
     description: "",
-    offer: true,
+    offer: false,
     regularPrice: 0,
     discountedPrice: 0,
   });
   const {type, name, bedrooms, bathrooms, parking, furnished, address, description, offer, regularPrice, discountedPrice} = formData;
 
 
-  function onChange() {};
+  function onChange(e) {
+    let boolean = null;
+    if(e.target.value === "true"){
+      boolean = true;
+    }
+    if(e.target.value === "false"){
+      boolean = false;
+    }
+    //files
+    if(e.target.files){
+      setFormData((prevState)=>({
+        ...prevState,
+        images: e.target.files
+      }));
+    }
+    // text/boolean/number
+      if(!e.target.files){
+        setFormData((prevState) => ({
+        ...prevState,
+        [e.target.id]: boolean ?? e.target.value,
+      }));
+    }
+  };
+
 
   return (
     <main className="max-w-md px-4 mx-auto">
@@ -29,14 +52,14 @@ export default function CreateListing() {
           <button type="button" id="type" value="sale" onClick={onChange}
           className={`px-7 py-3 font-medium text-sm uppercase shadow-lg rounded-lg hover:shadow-xl 
           focus:shadow-xl transition duration-200 ease-in-out w-full ${
-            type === "rent" ? "bg-white" : "bg-slate-600 text-gray-400"
+            type === "rent" ? "bg-white text-gray-400" : " bg-blue-200 "
           }`}>
             Sell
           </button>
           <button type="button" id="type" value="sale" onClick={onChange}
           className={`px-7 py-3 font-medium text-sm uppercase shadow-lg rounded-lg hover:shadow-xl 
           focus:shadow-xl transition duration-200 ease-in-out w-full ${
-            type === "sale" ? "bg-white":" bg-slate-600 text-gray-400"
+            type === "sale" ? "bg-white text-gray-400":"  bg-blue-200 "
           }`}>
             Rent
           </button>
@@ -67,14 +90,14 @@ export default function CreateListing() {
           <button type="button" id="parking" value={true} onClick={onChange}
           className={`px-7 py-3 font-medium text-sm uppercase shadow-lg rounded-lg hover:shadow-xl 
           focus:shadow-xl transition duration-200 ease-in-out w-full ${
-            !parking ? "bg-white" : "bg-slate-600 text-gray-400"
+            !parking ? "bg-white text-gray-400" : " bg-blue-200 "
           }`}>
             Yes
           </button>
           <button type="button" id="parking" value={false} onClick={onChange}
           className={`px-7 py-3 font-medium text-sm uppercase shadow-lg rounded-lg hover:shadow-xl 
           focus:shadow-xl transition duration-200 ease-in-out w-full ${
-            parking ? "bg-white":" bg-slate-600 text-gray-400"
+            parking ? "bg-white text-gray-400" : " bg-blue-200 "
           }`}>
             No
           </button>
@@ -85,14 +108,14 @@ export default function CreateListing() {
           <button type="button" id="furnished" value={true} onClick={onChange}
           className={`px-7 py-3 font-medium text-sm uppercase shadow-lg rounded-lg hover:shadow-xl 
           focus:shadow-xl transition duration-200 ease-in-out w-full ${
-            !furnished ? "bg-white" : "bg-slate-600 text-gray-400"
+            !furnished ? "bg-white text-gray-400" : " bg-blue-200 "
           }`}>
             Yes
           </button>
           <button type="button" id="furnished" value={false} onClick={onChange}
           className={`px-7 py-3 font-medium text-sm uppercase shadow-lg rounded-lg hover:shadow-xl 
           focus:shadow-xl transition duration-200 ease-in-out w-full ${
-            furnished ? "bg-white":" bg-slate-600 text-gray-400"
+            furnished ? "bg-white text-gray-400" : " bg-blue-200 "
           }`}>
             No
           </button>
@@ -114,14 +137,14 @@ export default function CreateListing() {
           <button type="button" id="offer" value={true} onClick={onChange}
           className={`px-7 py-3 font-medium text-sm uppercase shadow-lg rounded-lg hover:shadow-xl 
           focus:shadow-xl transition duration-200 ease-in-out w-full ${
-            !offer ? "bg-white" : "bg-slate-600 text-gray-400"
+            !offer ? "bg-white text-gray-400" : " bg-blue-200 "
           }`}>
             Yes
           </button>
           <button type="button" id="offer" value={false} onClick={onChange}
           className={`px-7 py-3 font-medium text-sm uppercase shadow-lg rounded-lg hover:shadow-xl 
           focus:shadow-xl transition duration-200 ease-in-out w-full ${
-            offer ? "bg-white":" bg-slate-600 text-gray-400"
+            offer ? "bg-white text-gray-400" : " bg-blue-200 "
           }`}>
             No
           </button>
