@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function CreateListing() {
+  const [geolocationEnabled, setGeolocationEnabled] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     type: "rent",
     name: "",
@@ -13,8 +16,11 @@ export default function CreateListing() {
     offer: false,
     regularPrice: 0,
     discountedPrice: 0,
+    latitude: 0,
+    longitude: 0,
+    images: {}
   });
-  const {type, name, bedrooms, bathrooms, parking, furnished, address, description, offer, regularPrice, discountedPrice} = formData;
+  const {type, name, bedrooms, bathrooms, parking, furnished, address, description, offer, regularPrice, discountedPrice, latitude, longitude, images} = formData;
 
 
   function onChange(e) {
@@ -41,15 +47,38 @@ export default function CreateListing() {
     }
   };
 
+  function onSubmit(e) {
+  e.preventDefault();
+  setLoading(true);
+  if(discountedPrice >= regularPrice) {
+    setLoading(false)
+    toast.error('Discounted price must be a reduced price')
+    return;
+  }
+  if(images.length > 6){
+    setLoading(false);
+    toast.error("Max of 6 images allowed")
+    return;
+  }
+  let geolocation = {}
+  let location
+  if(geolocationEnabled){
+    
+  }
+  }
+
+  if(loading){
+    return (<div>Loading...</div>)
+  }
 
   return (
     <main className="max-w-md px-4 mx-auto">
       <h1 className="text-3xl text-center mt-6 font-bold ">Create a Listing</h1>
-      <form>
+      <form onSubmit={onSubmit}>
        
         <p className="text-lg mt-6 font-semibold">Sell / Rent</p>
         <div className="flex">
-          <button type="button" id="type" value="sale" onClick={onChange}
+          <button type="button" id="type" value="rent" onClick={onChange}
           className={`px-7 py-3 font-medium text-sm uppercase shadow-lg rounded-lg hover:shadow-xl 
           focus:shadow-xl transition duration-200 ease-in-out w-full ${
             type === "rent" ? "bg-white text-gray-400" : " bg-blue-200 "
@@ -69,7 +98,7 @@ export default function CreateListing() {
         <input type="text" name="name" value={name} id="name" onChange={onChange} placeholder="Name" maxLength="32" minLength="10" required
         className="shadow-lg rounded-lg hover:shadow-xl text-xl text-gray-700 border border-gray-300 transition duration-200 ease-in-out
           focus:shadow-xl focus:text-gray-800  focus:bg-white w-full focus:border-gray-100 mb-6" />
-          <div className="flex space-x-6 mb-6">
+          <div className="flex space-x-10 mb-6">
             <div>
               <p className="text-lg font-semibold">Beds</p>
               <input type="number" name="" id="bedrooms" value={bedrooms} onChange={onChange} min="1" max="50" required
@@ -125,6 +154,23 @@ export default function CreateListing() {
         <textarea type="text" name="address" value={address} id="address" onChange={onChange} placeholder="Address..." minLength="10"  required
         className="shadow-lg rounded-lg hover:shadow-xl text-xl text-gray-700 border border-gray-300 transition duration-200 ease-in-out
           focus:shadow-xl focus:text-gray-800  focus:bg-white w-full focus:border-gray-100 mb-2" />
+
+          {!geolocationEnabled && (
+            <div className="flex space-x-10 justify-start mb-6">
+              <div>
+                <p>Latitude</p>
+                <input type="number" min="-90" max="90" name="" id="latitude" value={latitude} onChange={onChange} required className="w-full px-4 py-2 
+                text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-200 
+                ease-in-out focus:bg-white focus:text-gray-700 focus:border-slate-600 text-center " />
+              </div>
+              <div>
+                <p>Longitude</p>
+                <input type="number" min="-180" max="180" name="" id="longitude" value={longitude} onChange={onChange} required className="w-full px-4 py-2 
+                text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-200 
+                ease-in-out focus:bg-white focus:text-gray-700 focus:border-slate-600 text-center " />
+              </div>
+            </div>
+          )}
 
 <p className="text-lg font-semibold">Description</p>
         <textarea type="text" name="description" value={description} id="description" onChange={onChange} placeholder="description..." minLength="10"  required
